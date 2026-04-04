@@ -21,7 +21,7 @@
         .vence-verde { background: #127c12; color: #b4ffb4; }
         .btn-netflix { background: #E50914; color: white; font-weight: bold; border: none; }
         .btn-netflix:hover { background: #b20710; color: white; }
-        .table { --bs-table-bg: transparent; color: #ccc; }
+        .table { --bs-table-bg: transparent; color: #ccc; border-color: #333; }
     </style>
 </head>
 <body>
@@ -43,12 +43,12 @@
                     </span>
                 </div>
                 <div class="p-3">
-                    <p class="small text-secondary mb-1">Usuario: <span class="text-info">{{ c.correo }}</span></p>
+                    <p class="small text-secondary mb-1">Correo: <span class="text-info">{{ c.correo }}</span></p>
                     <p class="small text-secondary">Clave: <span class="text-white fw-bold">{{ c.password }}</span></p>
                     
                     <hr class="border-secondary">
                     
-                    <table class="table table-sm align-middle">
+                    <table class="table table-sm align-middle mb-3">
                         <thead><tr class="small text-secondary"><th>Perfil</th><th>PIN</th><th>Contacto</th></tr></thead>
                         <tbody>
                             {% for p in c.perfiles %}
@@ -61,11 +61,11 @@
                         </tbody>
                     </table>
                     
-                    <div class="d-flex justify-content-between mt-3">
+                    <div class="d-flex justify-content-between">
                         <button class="btn btn-sm btn-outline-light" onclick="abrirModalPerfil('{{ c.id }}', '{{ c.plataforma }}')">
-                            + Perfil
+                            <i class="bi bi-person-plus"></i> Perfil
                         </button>
-                        <a href="/eliminar_cuenta/{{ c.id }}" class="btn btn-sm btn-outline-danger" onclick="return confirm('¿Borrar esta cuenta?')">
+                        <a href="/eliminar_cuenta/{{ c.id }}" class="btn btn-sm btn-outline-danger" onclick="return confirm('¿Seguro que quieres borrar toda la cuenta?')">
                             <i class="bi bi-trash"></i>
                         </a>
                     </div>
@@ -84,9 +84,10 @@
                 <input type="text" name="plataforma" class="form-control bg-dark text-white mb-2" placeholder="Ej: Netflix" required>
                 <input type="email" name="correo" class="form-control bg-dark text-white mb-2" placeholder="Correo de acceso" required>
                 <input type="text" name="password" class="form-control bg-dark text-white mb-2" placeholder="Contraseña" required>
+                <label class="small text-secondary mb-1">Fecha de Vencimiento:</label>
                 <input type="date" name="vencimiento" class="form-control bg-dark text-white mb-2">
             </div>
-            <div class="p-3 pt-0"><button type="submit" class="btn btn-netflix w-100">GUARDAR</button></div>
+            <div class="p-3 pt-0"><button type="submit" class="btn btn-netflix w-100">GUARDAR CUENTA</button></div>
         </form>
     </div></div>
 </div>
@@ -96,12 +97,12 @@
         <form action="/agregar_perfil" method="POST">
             <input type="hidden" name="id_cuenta" id="input_id_cuenta">
             <div class="modal-body p-4">
-                <h6 class="mb-3">Añadir perfil a <span id="nombre_plat" class="text-danger"></span></h6>
+                <h6 class="mb-3 text-center">Añadir perfil a <span id="nombre_plat" class="text-danger"></span></h6>
                 <input type="text" name="nombre" class="form-control bg-dark text-white mb-2" placeholder="Nombre Usuario" required>
-                <input type="text" name="pin" class="form-control bg-dark text-white mb-2" placeholder="PIN (opcional)">
-                <input type="text" name="contacto" class="form-control bg-dark text-white mb-2" placeholder="Teléfono">
+                <input type="text" name="pin" class="form-control bg-dark text-white mb-2" placeholder="PIN">
+                <input type="text" name="contacto" class="form-control bg-dark text-white mb-2" placeholder="Teléfono / Contacto">
             </div>
-            <div class="p-3 pt-0"><button type="submit" class="btn btn-primary w-100 btn-sm">Añadir</button></div>
+            <div class="p-3 pt-0"><button type="submit" class="btn btn-primary w-100 btn-sm">GUARDAR PERFIL</button></div>
         </form>
     </div></div>
 </div>
