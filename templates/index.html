@@ -3,89 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Streaming Manager Pro</title>
+    <title>Panel de Control - Streaming</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/bootstrap.min.css" rel="stylesheet">
     <style>
-        body { background-color: #0b0b0b; color: #e5e5e5; font-family: sans-serif; }
-        .navbar { background: #000; border-bottom: 3px solid #E50914; padding: 15px; }
-        .card-cuenta { background: #181818; border-radius: 10px; border: 1px solid #333; padding: 20px; margin-bottom: 20px; }
-        .btn-netflix { background: #E50914; color: white; fw-bold; border: none; border-radius: 4px; padding: 8px 16px; text-decoration: none; }
-        .modal-content { background: #181818; border: 1px solid #E50914; color: white; }
-        .form-control { background: #333; border: none; color: white; margin-bottom: 10px; }
+        body {
+            background-color: #0f0f10;
+            color: white;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .main-title {
+            font-weight: 800;
+            margin-bottom: 3rem;
+            text-align: center;
+            letter-spacing: -1px;
+        }
+
+        .platform-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .platform-card {
+            background: #1a1a1c;
+            border: 1px solid #2d2d30;
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* Contenedor para que todos los logos midan lo mismo */
+        .logo-container {
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Esto evita que el logo se deforme */
+            filter: drop-shadow(0px 4px 8px rgba(0,0,0,0.5));
+        }
+
+        .platform-card:hover {
+            transform: translateY(-10px);
+            border-color: #ffc107;
+            background: #252528;
+        }
+
+        .platform-card:hover img {
+            transform: scale(1.1);
+            transition: 0.3s;
+        }
+
+        @media (max-width: 992px) {
+            .platform-grid {
+                grid-template-columns: repeat(2, 1fr);
+                max-width: 600px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .platform-grid {
+                grid-template-columns: 1fr;
+            }
+            .platform-card {
+                flex-direction: row;
+                justify-content: flex-start;
+                padding-left: 30px;
+            }
+            .logo-container {
+                width: 50px;
+                height: 50px;
+            }
+        }
     </style>
 </head>
 <body>
 
-<nav class="navbar mb-4">
-    <div class="container d-flex justify-content-between align-items-center">
-        <span style="color: #E50914; font-weight: bold; font-size: 1.5rem;">STREAMING MANAGER</span>
-        <button class="btn-netflix" data-bs-toggle="modal" data-bs-target="#modalCuenta">+ NUEVA CUENTA</button>
-    </div>
-</nav>
+    <h1 class="main-title">GESTIÓN DE <span style="color: #ffc107;">STREAMING</span></h1>
 
-<div class="container">
-    <div class="row">
-        {% for c in cuentas %}
-        <div class="col-md-4">
-            <div class="card-cuenta text-center">
-                <h2 style="color: white; border-bottom: 1px solid #333; padding-bottom: 10px;">{{ c.plataforma.upper() }}</h2>
-                <p style="color: #aaa; margin-top: 15px;">Usuario: <b style="color: #00d4ff;">{{ c.correo }}</b></p>
-                <p style="color: #aaa;">Clave: <b style="color: white;">{{ c.password }}</b></p>
-                
-                <div style="background: #000; padding: 10px; border-radius: 5px; margin: 15px 0; text-align: left; font-size: 0.9rem;">
-                    {% for p in c.perfiles %}
-                    <div style="border-bottom: 1px solid #222; padding: 5px 0; color: #888;">
-                        👤 {{ p[0] }} | PIN: <span style="color: white;">{{ p[1] or 'S/N' }}</span>
-                    </div>
-                    {% endfor %}
-                </div>
-
-                <button class="btn btn-outline-light btn-sm w-100 mb-2" onclick="abrirModalPerfil('{{ c.id }}', '{{ c.plataforma }}')">+ Añadir Perfil</button>
-                <a href="/eliminar_cuenta/{{ c.id }}" class="btn btn-outline-danger btn-sm w-100" onclick="return confirm('¿Eliminar cuenta?')">Eliminar Todo</a>
+    <div class="platform-grid">
+        <a href="/plataforma/Netflix" class="platform-card">
+            <div class="logo-container">
+                <img src="{{ url_for('static', filename='img/netflix.png') }}" alt="Netflix">
             </div>
-        </div>
-        {% endfor %}
-    </div>
-</div>
+            <span class="fw-bold">NETFLIX</span>
+        </a>
 
-<div class="modal fade" id="modalCuenta" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form action="/agregar_cuenta" method="POST" class="p-4">
-                <h5>Registrar Cuenta</h5>
-                <input type="text" name="plataforma" class="form-control" placeholder="Plataforma" required>
-                <input type="email" name="correo" class="form-control" placeholder="Correo" required>
-                <input type="text" name="password" class="form-control" placeholder="Contraseña" required>
-                <input type="date" name="vencimiento" class="form-control" required>
-                <button type="submit" class="btn-netflix w-100 mt-2">GUARDAR</button>
-            </form>
-        </div>
-    </div>
-</div>
+        <a href="/plataforma/Disney" class="platform-card">
+            <div class="logo-container">
+                <img src="{{ url_for('static', filename='img/disney.png') }}" alt="Disney+">
+            </div>
+            <span class="fw-bold">DISNEY+</span>
+        </a>
 
-<div class="modal fade" id="modalPerfil" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form action="/agregar_perfil" method="POST" class="p-4">
-                <input type="hidden" name="id_cuenta" id="id_input">
-                <h5>Añadir perfil a <span id="span_plat" style="color: #E50914;"></span></h5>
-                <input type="text" name="nombre" class="form-control" placeholder="Nombre del perfil" required>
-                <input type="text" name="pin" class="form-control" placeholder="PIN">
-                <input type="text" name="contacto" class="form-control" placeholder="Contacto (Opcional)">
-                <button type="submit" class="btn btn-primary w-100 mt-2">AÑADIR</button>
-            </form>
-        </div>
-    </div>
-</div>
+        <a href="/plataforma/HBO" class="platform-card">
+            <div class="logo-container">
+                <img src="{{ url_for('static', filename='img/hbo.png') }}" alt="HBO Max">
+            </div>
+            <span class="fw-bold">HBO MAX</span>
+        </a>
 
-<script>
-    function abrirModalPerfil(id, plat) {
-        document.getElementById('id_input').value = id;
-        document.getElementById('span_plat').innerText = plat;
-        var myModal = new bootstrap.Modal(document.getElementById('modalPerfil'));
-        myModal.show();
-    }
-</script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/bootstrap.bundle.min.js"></script>
+        <a href="/plataforma/Prime" class="platform-card">
+            <div class="logo-container">
+                <img src="{{ url_for('static', filename='img/prime.png') }}" alt="Prime Video">
+            </div>
+            <span class="fw-bold">PRIME VIDEO</span>
+        </a>
+    </div>
+
 </body>
 </html>

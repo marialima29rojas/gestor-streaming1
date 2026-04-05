@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ 'Editar' if edit else 'Nueva' }} Cuenta - {{ nombre }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/' + nombre.lower() + '.png') }}">
+    <style>
+            @media (max-width: 480px) {
+        .card-custom {
+            width: 95%;
+            padding: 20px;
+        }
+        /* Si tienes botones en línea, los ponemos uno debajo del otro */
+        .d-flex {
+            flex-direction: column;
+        }
+        .btn-save {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+    }
+        body { 
+            background-color: #0f0f10; 
+            color: #ffffff; 
+            font-family: 'Inter', sans-serif;
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            min-height: 100vh; 
+            margin: 0;
+        }
+        .card-custom { 
+            background: #1a1a1c; 
+            border: 1px solid #2d2d2f; 
+            border-radius: 24px; 
+            padding: 2.5rem; 
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); 
+            width: 100%; 
+            max-width: 480px;
+        }
+        .header-section {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        .platform-badge {
+            background: rgba(229, 9, 20, 0.1);
+            color: #E50914;
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .form-label { 
+            color: #a0a0a5; 
+            font-size: 0.85rem; 
+            font-weight: 600; 
+            margin-bottom: 0.6rem;
+            margin-left: 4px;
+        }
+        .form-control { 
+            background: #262629 !important; 
+            border: 1.5px solid #363639 !important; 
+            color: white !important; 
+            border-radius: 12px; 
+            padding: 0.8rem 1rem; 
+            transition: all 0.2s ease;
+        }
+        .form-control:focus {
+            border-color: #E50914 !important;
+            box-shadow: 0 0 0 4px rgba(229, 9, 20, 0.15) !important;
+            outline: none;
+        }
+        .input-group-container {
+            margin-bottom: 1.5rem; /* Más espacio entre campos */
+        }
+        .btn-save { 
+            background: #E50914; 
+            border: none; 
+            padding: 0.9rem; 
+            border-radius: 12px; 
+            font-weight: 700; 
+            color: white; 
+            width: 100%;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+        }
+        .btn-save:hover { 
+            background: #f40612; 
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -10px rgba(229, 9, 20, 0.5);
+        }
+        .btn-cancel {
+            color: #808080;
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: block;
+            text-align: center;
+            margin-top: 1.2rem;
+            transition: color 0.2s;
+        }
+        .btn-cancel:hover { color: #ffffff; }
+    </style>
+</head>
+<body>
+    <div class="card-custom">
+        <div class="header-section">
+            <span class="platform-badge">{{ nombre }}</span>
+            <h2 class="mt-2 fw-bold">{{ 'Editar' if edit else 'Nueva' }} Cuenta</h2>
+            <p class="text-secondary small">Introduce las credenciales de la cuenta maestra.</p>
+        </div>
+        
+        <form action="/agregar_cuenta" method="POST">
+            <input type="hidden" name="plat_nombre" value="{{ nombre }}">
+            {% if edit %}
+            <input type="hidden" name="id" value="{{ cuenta[0] }}">
+            {% endif %}
+            
+            <div class="input-group-container">
+                <label class="form-label">Correo electrónico</label>
+                <input type="email" name="correo" class="form-control" 
+                       value="{{ cuenta[1] if edit else '' }}" 
+                       placeholder="ejemplo@correo.com" required>
+            </div>
+            
+            <div class="input-group-container">
+                <label class="form-label">Contraseña de acceso</label>
+                <input type="text" name="password" class="form-control" 
+                       value="{{ cuenta[2] if edit else '' }}" 
+                       placeholder="Escribe la contraseña aquí" required>
+            </div>
+            
+            <button type="submit" class="btn btn-save">
+                {{ 'ACTUALIZAR CUENTA' if edit else 'GUARDAR CUENTA' }}
+            </button>
+            
+            <a href="/plataforma/{{ nombre }}" class="btn btn-cancel">Cancelar y volver</a>
+        </form>
+    </div>
+</body>
+</html>
