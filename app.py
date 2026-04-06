@@ -6,9 +6,6 @@ from datetime import datetime
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "clave_secreta_por_defecto")
 
-# CONFIGURACIÓN PARA RENDER: 
-# Usamos la variable de entorno DATABASE_URL que configuraremos en el panel de Render.
-# Si no existe, usa la de Neon por defecto para pruebas locales.
 DB_URL = os.environ.get("DATABASE_URL", "postgresql://neondb_owner:npg_8dhJvITgMB4j@ep-muddy-sky-agpgcsus-pooler.c-2.eu-central-1.aws.neon.tech/neondb?sslmode=require")
 
 def conectar_db():
@@ -25,11 +22,12 @@ def ver_plataforma(nombre):
         conn = conectar_db()
         cur = conn.cursor()
         
-        # Orden consecutivo por ID para mantener la posición
         cur.execute('SELECT id, correo, password FROM cuentas WHERE plataforma = %s ORDER BY id ASC', (nombre,))
         cuentas_raw = cur.fetchall()
         
+        hoy = datetime.now().date()
         lista_cuentas = []
+        
         for c in cuentas_raw:
             cur.execute('''
                 SELECT nombre_usuario, pin, contacto, id, vencimiento 
@@ -38,24 +36,42 @@ def ver_plataforma(nombre):
                 ORDER BY id ASC
             ''', (c[0],))
             
-            perfiles = cur.fetchall()
+            perfiles_raw = cur.fetchall()
+            perfiles_procesados = []
+            
+            for p in perfiles_raw:
+                vencimiento = p[4] # p[4] es la fecha de vencimiento
+                dias_restantes = None
+                
+                if vencimiento:
+                    # Calculamos la resta de fechas
+                    delta = vencimiento - hoy
+                    dias_restantes = delta.days
+                
+                perfiles_procesados.append({
+                    'nombre': p[0],
+                    'pin': p[1],
+                    'contacto': p[2],
+                    'id': p[3],
+                    'vencimiento': vencimiento,
+                    'dias_restantes': dias_restantes
+                })
             
             lista_cuentas.append({
                 'id': c[0], 
                 'correo': c[1], 
                 'password': c[2], 
-                'perfiles': perfiles
+                'perfiles': perfiles_procesados
             })
             
         cur.close()
-        hoy = datetime.now().date()
         return render_template('plataforma.html', nombre=nombre, cuentas=lista_cuentas, hoy=hoy)
     except Exception as e:
         return f"Error: {e}"
     finally:
         if conn: conn.close()
 
-# --- RUTAS DE CUENTAS ---
+# --- LAS DEMÁS RUTAS (agregar_cuenta, eliminar, etc.) SE MANTIENEN IGUAL ---
 
 @app.route('/nueva_cuenta/<plat>')
 def vista_form_cuenta(plat):
@@ -67,7 +83,6 @@ def agregar_cuenta():
     id_cuenta = request.form.get('id')
     correo = request.form['correo']
     password = request.form['password']
-    
     conn = conectar_db()
     cur = conn.cursor()
     if id_cuenta:
@@ -78,8 +93,6 @@ def agregar_cuenta():
     cur.close()
     conn.close()
     return redirect(url_for('ver_plataforma', nombre=plat))
-
-# --- RUTAS DE PERFILES ---
 
 @app.route('/nuevo_perfil/<plat>')
 def vista_form_perfil(plat):
@@ -97,12 +110,9 @@ def agregar_perfil():
     plat = request.form['plat_nombre']
     id_perfil = request.form.get('id')
     vencimiento = request.form.get('vencimiento') 
-    
     conn = conectar_db()
     cur = conn.cursor()
-    
     if not vencimiento: vencimiento = None
-
     if id_perfil:
         cur.execute('UPDATE perfiles SET id_cuenta=%s, nombre_usuario=%s, pin=%s, contacto=%s, vencimiento=%s WHERE id=%s',
                     (request.form['id_cuenta'], request.form['nombre'], request.form['pin'], request.form['contacto'], vencimiento, id_perfil))
@@ -156,9 +166,6 @@ def eliminar_perfil(id, plat):
     conn.close()
     return redirect(url_for('ver_plataforma', nombre=plat))
 
-# CONFIGURACIÓN DE ARRANQUE PARA RENDER
 if __name__ == '__main__':
-    # Usamos el puerto que Render nos asigne, o 5000 por defecto en local
     port = int(os.environ.get("PORT", 5000))
-    # En producción (Render), host debe ser '0.0.0.0'
     app.run(host='0.0.0.0', port=port, debug=True)
