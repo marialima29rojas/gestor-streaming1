@@ -24,67 +24,21 @@
         .btn-action:hover { transform: translateY(-2px); filter: brightness(1.1); color: inherit; }
 
         /* BUSCADOR */
-        .search-container {
-            position: relative;
-            width: 100%;
-            max-width: 500px;
-            margin: 20px auto 0 auto;
-        }
-        .search-container i {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #666;
-        }
-        #buscador {
-            width: 100%;
-            background: #1a1a1c;
-            border: 1px solid var(--border-soft);
-            border-radius: 50px;
-            padding: 12px 20px 12px 45px;
-            color: white;
-            outline: none;
-            transition: 0.3s;
-        }
+        .search-container { position: relative; width: 100%; max-width: 500px; margin: 20px auto 0 auto; }
+        .search-container i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #666; }
+        #buscador { width: 100%; background: #1a1a1c; border: 1px solid var(--border-soft); border-radius: 50px; padding: 12px 20px 12px 45px; color: white; outline: none; transition: 0.3s; }
         #buscador:focus { border-color: var(--primary-color); box-shadow: 0 0 10px rgba(255,255,255,0.05); }
 
         /* Bloques de cuenta */
         .cuenta-block { background: var(--card-master); border-radius: 16px; margin-bottom: 35px; border: 1px solid var(--border-soft); overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
-        
-        .cuenta-header-visual { 
-            background: rgba(255,255,255,0.02); 
-            padding: 30px 25px; 
-            border-bottom: 1px solid var(--border-soft); 
-            text-align: center;
-            position: relative;
-        }
+        .cuenta-header-visual { background: rgba(255,255,255,0.02); padding: 30px 25px; border-bottom: 1px solid var(--border-soft); text-align: center; position: relative; }
 
-        .email-main { 
-            font-size: 1.7rem; 
-            font-weight: 800; 
-            color: #fff; 
-            margin-bottom: 5px; 
-            display: block; 
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-        }
+        .email-main { font-size: 1.7rem; font-weight: 800; color: #fff; margin-bottom: 5px; display: block; word-wrap: break-word; overflow-wrap: break-word; }
         .pass-main { font-size: 1.2rem; color: #888; }
         .pass-main code { color: var(--primary-color); font-size: 1.3rem; background: rgba(255,255,255,0.05); padding: 2px 12px; border-radius: 8px; margin-left: 5px; }
 
         .floating-actions { position: absolute; top: 20px; right: 25px; display: flex; align-items: center; gap: 15px; }
-
-        .btn-quick-add {
-            background: rgba(255, 193, 7, 0.1);
-            color: #ffc107;
-            border: 1px solid #ffc107;
-            padding: 5px 15px;
-            border-radius: 8px;
-            font-size: 0.85rem;
-            font-weight: 700;
-            text-decoration: none;
-            transition: 0.2s;
-        }
+        .btn-quick-add { background: rgba(255, 193, 7, 0.1); color: #ffc107; border: 1px solid #ffc107; padding: 5px 15px; border-radius: 8px; font-size: 0.85rem; font-weight: 700; text-decoration: none; transition: 0.2s; }
         .btn-quick-add:hover { background: #ffc107; color: #000; }
 
         .action-icon { padding: 5px 8px; border-radius: 6px; transition: 0.2s; color: #555; text-decoration: none; font-size: 1.2rem; }
@@ -95,61 +49,20 @@
         .perfiles-table th { color: #555; font-size: 0.75rem; text-transform: uppercase; padding: 12px 25px; border-bottom: 1px solid var(--border-soft); letter-spacing: 1px; text-align: center; }
         .perfiles-table td { padding: 14px 25px; border-bottom: 1px solid #252527; vertical-align: middle; text-align: center; }
 
-        .cliente-container { display: inline-flex; align-items: center; gap: 10px; justify-content: center; }
+        /* SEMÁFORO DE VENCIMIENTO */
+        .badge-vence { padding: 5px 12px; border-radius: 6px; font-weight: 700; font-size: 0.85rem; display: inline-block; }
+        .vence-rojo { background-color: rgba(229, 9, 20, 0.2); color: #ff4444; border: 1px solid #ff4444; }
+        .vence-amarillo { background-color: rgba(255, 193, 7, 0.2); color: #ffc107; border: 1px solid #ffc107; }
+        .vence-verde { background-color: rgba(40, 167, 69, 0.2); color: #28a745; border: 1px solid #28a745; }
+
         .btn-wa { color: #25D366; text-decoration: none; font-weight: 600; padding: 4px 10px; border-radius: 6px; background: rgba(37, 211, 102, 0.05); transition: 0.2s; display: inline-flex; align-items: center; gap: 5px; }
         .btn-wa:hover { background: #25D366; color: white; }
-        
-        .vence-badge { background: #222; border: 1px solid #444; color: #aaa; padding: 5px 10px; border-radius: 8px; font-size: 0.85rem; font-weight: 500; display: inline-flex; align-items: center; gap: 6px; }
-        .vence-expired { border-color: #ff4444; color: #ff4444; background: rgba(255,68,68,0.05); }
-
-        /* --- RESPONSIVE DESIGN --- */
-
-        @media (max-width: 992px) {
-            .container { max-width: 95%; }
-            .email-main { font-size: 1.4rem; }
-        }
 
         @media (max-width: 600px) {
-            .header-plat { padding: 30px 10px; }
             .header-plat h1 { font-size: 1.8rem; }
-            
-            .cuenta-header-visual {
-                padding: 80px 15px 25px 15px; 
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .floating-actions {
-                top: 15px;
-                right: 0;
-                width: 100%;
-                justify-content: center;
-                flex-direction: row;
-                gap: 10px;
-            }
-
-            .email-main {
-                font-size: 1.1rem;
-                width: 100%;
-                max-width: 280px;
-                margin: 0 auto 10px auto;
-                word-break: break-all;
-            }
-
-            .perfiles-table {
-                display: block;
-                overflow-x: auto;
-                white-space: nowrap;
-            }
-            
-            .header-plat a[style*="position:absolute"] {
-                position: relative !important;
-                left: 0 !important;
-                top: 0 !important;
-                display: inline-block;
-                margin-bottom: 20px;
-            }
+            .cuenta-header-visual { padding: 80px 15px 25px 15px; flex-direction: column; }
+            .floating-actions { top: 15px; right: 0; width: 100%; justify-content: center; }
+            .perfiles-table { display: block; overflow-x: auto; white-space: nowrap; }
         }
     </style>
 </head>
@@ -204,33 +117,35 @@
                     {% for p in c.perfiles %}
                     <tr>
                         <td class="fw-medium" style="color: #eee;">
-                            <div class="cliente-container">
-                                <i class="bi bi-person-circle text-info small"></i> 
-                                {{ p[0] }}
-                            </div>
+                            <div class="cliente-container"><i class="bi bi-person-circle text-info small"></i> {{ p.nombre }}</div>
                         </td>
-                        <td class="text-warning fw-bold">{{ p[1] or '----' }}</td>
+                        <td class="text-warning fw-bold">{{ p.pin or '----' }}</td>
                         <td>
-                            {% if p[4] %}
-                                <span class="vence-badge {{ 'vence-expired' if p[4] < hoy else '' }}">
-                                    <i class="bi bi-calendar3"></i> {{ p[4] }}
-                                </span>
+                            {% if p.vencimiento %}
+                                {% if p.dias_restantes <= 0 %}
+                                    <div class="badge-vence vence-rojo">Vencido ({{ p.dias_restantes }}d)</div>
+                                {% elif p.dias_restantes <= 5 %}
+                                    <div class="badge-vence vence-amarillo">Faltan {{ p.dias_restantes }}d</div>
+                                {% else %}
+                                    <div class="badge-vence vence-verde">Faltan {{ p.dias_restantes }}d</div>
+                                {% endif %}
+                                <div style="font-size: 0.75rem; color: #666; margin-top: 4px;">{{ p.vencimiento }}</div>
                             {% else %}
                                 <span class="text-muted small">Sin fecha</span>
                             {% endif %}
                         </td>
                         <td>
-                            {% if p[2] %}
-                                <a href="https://wa.me/{{ p[2] }}" target="_blank" class="btn-wa">
-                                    <i class="bi bi-whatsapp"></i> {{ p[2] }}
+                            {% if p.contacto %}
+                                <a href="https://wa.me/{{ p.contacto }}" target="_blank" class="btn-wa">
+                                    <i class="bi bi-whatsapp"></i> {{ p.contacto }}
                                 </a>
                             {% else %}
                                 <span class="text-muted small">N/A</span>
                             {% endif %}
                         </td>
                         <td>
-                            <a href="/editar_perfil/{{ p[3] }}/{{ nombre }}" class="action-icon icon-edit" title="Editar Perfil"><i class="bi bi-pencil"></i></a>
-                            <a href="/eliminar_perfil/{{ p[3] }}/{{ nombre }}" class="action-icon icon-delete" onclick="return confirm('¿Quitar perfil?')"><i class="bi bi-x-lg"></i></a>
+                            <a href="/editar_perfil/{{ p.id }}/{{ nombre }}" class="action-icon icon-edit"><i class="bi bi-pencil"></i></a>
+                            <a href="/eliminar_perfil/{{ p.id }}/{{ nombre }}" class="action-icon icon-delete" onclick="return confirm('¿Quitar?')"><i class="bi bi-x-lg"></i></a>
                         </td>
                     </tr>
                     {% endfor %}
@@ -247,16 +162,9 @@
 function filtrarContenido() {
     let input = document.getElementById('buscador').value.toLowerCase();
     let bloques = document.getElementsByClassName('cuenta-block');
-
     for (let i = 0; i < bloques.length; i++) {
-        // Busca en todo el texto del bloque (Correo + Clientes + WhatsApp)
         let contenidoBloque = bloques[i].textContent.toLowerCase();
-        
-        if (contenidoBloque.includes(input)) {
-            bloques[i].style.display = ""; // Muestra
-        } else {
-            bloques[i].style.display = "none"; // Oculta
-        }
+        bloques[i].style.display = contenidoBloque.includes(input) ? "" : "none";
     }
 }
 </script>
